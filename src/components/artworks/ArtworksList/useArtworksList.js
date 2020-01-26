@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { get } from 'lodash';
 import { useQuery, useApolloClient } from '@apollo/client';
 import { ARTWORKS_FILTER } from './queries';
 
@@ -13,16 +12,12 @@ export const useArtworksList = () => {
   const { data, loading } = useQuery(ARTWORKS_FILTER, {
     variables: { pageSize: PAGE_SIZE, page, term: searchTerm },
   });
-  const artworks = get(data, 'filter_artworks.filtered_artworks.edges', []);
-  const previousPage = get(
-    data,
-    'filter_artworks.filtered_artworks.pageCursors.previous.page',
-    0
-  );
-  const total = get(data, 'filter_artworks.counts.total', 0);
+  const artworks = data?.filter_artworks?.filtered_artworks?.edges || [];
+  const previousPage =
+    data?.filter_artworks?.filtered_artworks?.pageCursors?.previous?.page || 0;
+  const total = data?.filter_artworks?.counts.total || 0;
 
   const handleNewTerm = () => {
-    // Cast string to undefined so term does not exist in query if empty
     const term = searchInputValue || undefined;
     setSearchTerm(term);
     setPage(1);
