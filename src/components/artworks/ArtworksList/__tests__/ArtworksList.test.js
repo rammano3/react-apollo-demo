@@ -79,7 +79,7 @@ describe('ArtworksList', () => {
     expect(queryByText('Art 3')).not.toBeInTheDocument();
 
     // First page cant use a previous button
-    expect(queryByText('Previous')).not.toBeInTheDocument();
+    expect(queryByText('Previous')).toHaveAttribute('disabled');
 
     userEvent.click(queryByText('Next'));
     await wait();
@@ -92,7 +92,7 @@ describe('ArtworksList', () => {
     expect(queryByText('Art 4')).toBeInTheDocument();
 
     // We can use previous since we have visitied before
-    expect(queryByText('Previous')).toBeInTheDocument();
+    expect(queryByText('Previous')).not.toHaveAttribute('disabled');
 
     userEvent.click(queryByText('Previous'));
     await wait();

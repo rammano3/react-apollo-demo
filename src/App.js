@@ -1,11 +1,17 @@
 import React from 'react';
+import { ApolloProvider } from '@apollo/client';
+import { ThemeProvider } from 'theme-ui';
 import { ArtworksList } from 'components/artworks/ArtworksList/ArtworksList';
+import client from './apollo-client';
+import theme from './theme';
 
 function App() {
   return (
-    <div>
-      <ArtworksList />
-    </div>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <ArtworksList />
+      </ThemeProvider>
+    </ApolloProvider>
   );
 }
 

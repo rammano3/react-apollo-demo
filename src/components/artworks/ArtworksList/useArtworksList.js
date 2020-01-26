@@ -3,9 +3,9 @@ import { get } from 'lodash';
 import { useQuery, useApolloClient } from '@apollo/client';
 import { ARTWORKS_FILTER } from './queries';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 20;
 
-export const useArtworskList = () => {
+export const useArtworksList = () => {
   const client = useApolloClient();
   const [page, setPage] = useState(1);
   const [searchInputValue, setSearchInputValue] = useState('');
@@ -65,4 +65,4 @@ export const useArtworskList = () => {
   };
 };
 
-export default useArtworskList;
+export default useArtworksList;

@@ -1,11 +1,16 @@
 import React from 'react';
-import { useArtworskList } from './useArtworksList';
-
-const styles = {
-  listContainer: { display: 'flex', flexWrap: 'wrap' },
-  listItem: { maxWidth: 200, padding: 8 },
-  listItemImage: { width: '100%' },
-};
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Heading,
+  Input,
+  Image,
+  Spinner,
+  Text,
+} from 'theme-ui';
+import { useArtworksList } from './useArtworksList';
 
 export function ArtworksList() {
   const {
@@ -18,49 +23,69 @@ export function ArtworksList() {
     searchInputValue,
     setSearchInputValue,
     total,
-  } = useArtworskList();
+  } = useArtworksList();
 
   return (
-    <div>
-      <h1>Artworks</h1>
-      <input
-        aria-label="Search Art"
-        type="text"
-        onChange={e => setSearchInputValue(e.target.value)}
-        value={searchInputValue}
-      />
-      <button onClick={handleNewTerm} disabled={loading}>
-        Search
-      </button>
-      {previousPage > 0 && (
-        <button onClick={handlePrev} disabled={loading}>
-          Previous
-        </button>
+    <Box p={3}>
+      <Heading mb={3}>Artworks</Heading>
+      <Flex sx={{ alignItems: 'center', mb: 3 }}>
+        <Flex sx={{ flexBasis: '50%', justifyContent: 'flex-start' }}>
+          <Input
+            aria-label="Search Art"
+            type="text"
+            onChange={e => setSearchInputValue(e.target.value)}
+            value={searchInputValue}
+          />
+          <Button onClick={handleNewTerm} disabled={loading} ml={2}>
+            Search
+          </Button>
+        </Flex>
+        <Flex
+          sx={{
+            flexBasis: '50%',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
+        >
+          <Text mr={3}>Total : {total.toLocaleString()}</Text>
+          <Button
+            onClick={handlePrev}
+            disabled={loading || previousPage < 1}
+            mr={2}
+          >
+            Previous
+          </Button>
+          <Button onClick={handleNext} disabled={loading}>
+            Next
+          </Button>
+        </Flex>
+      </Flex>
+      {loading && (
+        <Box sx={{ mt: 6, textAlign: 'center' }}>
+          <Spinner
+            role="progressbar"
+            aria-valuetext="Loading..."
+            aria-busy="true"
+          />
+        </Box>
       )}
-      <button onClick={handleNext} disabled={loading}>
-        Next
-      </button>
-      <span>Total : {total}</span>
-      <div style={styles.listContainer}>
-        {loading && (
-          <div role="progressbar" aria-valuetext="Loading..." aria-busy="true">
-            Loading...
-          </div>
-        )}
-        {artworks.map(artwork => (
-          <div key={artwork.node.id} style={styles.listItem}>
-            <div>
-              <img
-                alt={artwork.node.title}
-                src={artwork.node.image.url}
-                style={styles.listItemImage}
-              />
-            </div>
-            <div>{artwork.node.title}</div>
-          </div>
-        ))}
-      </div>
-    </div>
+      {!loading && (
+        <Flex
+          sx={{ flexWrap: 'wrap', alignItems: 'flex-start', mt: 4, mx: -1 }}
+        >
+          {artworks.map(artwork => (
+            <Card
+              key={artwork.node.id}
+              p={1}
+              sx={{ p: 1, mb: 3, mx: 2, maxWidth: '300px' }}
+            >
+              <Image alt={artwork.node.title} src={artwork.node.image.url} />
+              <Text>{artwork.node.title}</Text>
+            </Card>
+          ))}
+        </Flex>
+      )}
+    </Box>
   );
 }
 
