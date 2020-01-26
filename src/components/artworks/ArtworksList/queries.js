@@ -18,8 +18,10 @@ export const ARTWORKS_FILTER = gql`
             href
             title
             href
+            artist_names
             image {
               url
+              aspect_ratio
             }
           }
         }
